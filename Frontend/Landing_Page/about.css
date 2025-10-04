@@ -1,0 +1,213 @@
+/* ===================== */
+/* ABOUT PAGE STYLES */
+/* ===================== */
+
+/* About Section */
+section.about {
+  padding: 5rem 2rem;
+  text-align: center;
+}
+
+section.about h2 {
+  font-size: 2.2rem;
+  color: #0d1b2a;
+  margin-bottom: 1.2rem;
+  position: relative;
+}
+
+section.about h2::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 4px;
+  background: #21d4fd;
+  margin: 0.5rem auto 1rem auto;
+  border-radius: 2px;
+}
+
+/* ===================== */
+/* About Slider */
+/* ===================== */
+.about-slider {
+  position: relative;
+  max-width: 900px;
+  margin: 3rem auto;
+  overflow: visible;
+  padding: 0 2rem;
+}
+
+.slides {
+  display: flex;
+  transition: transform 0.6s ease-in-out;
+  will-change: transform;
+}
+
+.slide {
+  flex: 0 0 100%;
+  background: #fff;
+  padding: 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  text-align: center;
+  opacity: 0.7;
+  transform: scale(0.95);
+  transition: all 0.6s ease;
+}
+
+.slide.active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.slide h3 {
+  font-size: 1.6rem;
+  color: #0d1b2a;
+  margin-bottom: 1rem;
+}
+
+.slide p {
+  color: #333;
+  line-height: 1.8;
+  font-size: 1.05rem;
+}
+
+/* Arrows */
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: linear-gradient(145deg, #0d1b2a, #123c52);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  transition: all 0.3s ease;
+  z-index: 10;
+  opacity: 0.9;
+}
+
+.arrow:hover {
+  background: linear-gradient(145deg, #21d4fd, #0ea5e9);
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 0 15px rgba(33, 212, 253, 0.6);
+}
+
+.prev {
+  left: -60px;
+}
+
+.next {
+  right: -60px;
+}
+
+/* Dots */
+.slider-dots {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.2rem;
+  gap: 0.6rem;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #bbb;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.dot.active {
+  background: #21d4fd;
+}
+
+/* Benefits List */
+.benefits-list {
+  list-style: none;
+  margin-top: 1rem;
+  padding: 0;
+  text-align: left;
+  max-width: 600px;
+  margin: 1rem auto;
+}
+
+.benefits-list li {
+  font-size: 1rem;
+  margin: 0.6rem 0;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.benefits-list i {
+  color: #21d4fd;
+  font-size: 1.1rem;
+}
+
+/* About Image */
+.about-image {
+  margin-top: 3rem;
+}
+
+.about-image img {
+  width: 100%;
+  max-width: 850px;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+
+/* Feature Cards */
+.feature-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 4rem;
+}
+
+.feature-cards .card {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.feature-cards .card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 12px 30px rgba(33, 212, 253, 0.2);
+}
+
+.feature-cards i {
+  font-size: 2rem;
+  color: #21d4fd;
+  margin-bottom: 1rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .arrow {
+    width: 42px;
+    height: 42px;
+    font-size: 1rem;
+  }
+
+  .prev {
+    left: 10px;
+  }
+
+  .next {
+    right: 10px;
+  }
+
+  .slide {
+    padding: 1.8rem;
+  }
+}
