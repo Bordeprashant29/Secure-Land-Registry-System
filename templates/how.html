@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LandChain | About</title>
+
+  <!-- ✅ Corrected Flask static paths -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script defer src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+  <!-- Navbar -->
+  <header>
+    <nav class="navbar">
+      <div class="logo">LandChain</div>
+      <ul class="nav-links">
+        <li><a href="{{ url_for('home') }}">Home</a></li>
+        <li><a href="{{ url_for('about') }}">About</a></li>
+        <li><a href="{{ url_for('features') }}">Features</a></li>
+        <li><a href="{{ url_for('how') }}" class="active">How It Works</a></li>
+        <li><a href="{{ url_for('contact') }}">Contact</a></li>
+        <li><a href="#" class="btn">Login</a></li>
+      </ul>
+      <div class="menu-toggle"><i class="fas fa-bars"></i></div>
+    </nav>
+  </header>
+
+  <!-- How It Works Section -->
+  <section class="how page-section">
+    <h2>How It Works</h2>
+    <div class="steps">
+      <div class="step">
+        <span>1</span>
+        <h3>Register</h3>
+        <p>Create your secure LandChain account.</p>
+      </div>
+
+      <div class="step">
+        <span>2</span>
+        <h3>Verify</h3>
+        <p>Submit and verify your property ownership details.</p>
+      </div>
+
+      <div class="step">
+        <span>3</span>
+        <h3>Store</h3>
+        <p>Your land records are encrypted and stored immutably on the blockchain.</p>
+      </div>
+
+      <div class="step">
+        <span>4</span>
+        <h3>Secure Access</h3>
+        <p>Access and share verified land records anytime, anywhere.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 LandChain | Built with Blockchain Security</p>
+  </footer>
+</body>
+</html>

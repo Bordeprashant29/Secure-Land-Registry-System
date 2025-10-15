@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LandChain | About</title>
+
+  <!-- ✅ Corrected Flask static paths -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script defer src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+
+  <!-- Navbar -->
+  <header>
+    <nav class="navbar">
+      <div class="logo">LandChain</div>
+      <ul class="nav-links">
+        <li><a href="{{ url_for('home') }}">Home</a></li>
+        <li><a href="{{ url_for('about') }}">About</a></li>
+        <li><a href="{{ url_for('features') }}" class="active">Features</a></li>
+        <li><a href="{{ url_for('how') }}">How It Works</a></li>
+        <li><a href="{{ url_for('contact') }}">Contact</a></li>
+        <li><a href="#" class="btn">Login</a></li>
+      </ul>
+      <div class="menu-toggle"><i class="fas fa-bars"></i></div>
+    </nav>
+  </header>
+
+  <!-- Features Section -->
+  <section class="features page-section">
+    <h2>Key Features</h2>
+    <div class="feature-cards">
+      <div class="card">
+        <i class="fas fa-shield-alt"></i>
+        <h3>Blockchain Security</h3>
+        <p>Land records are encrypted and secured using blockchain technology for maximum protection.</p>
+      </div>
+      <div class="card">
+        <i class="fas fa-balance-scale"></i>
+        <h3>Transparency</h3>
+        <p>Every transaction is verifiable on the ledger, ensuring complete trust and accountability.</p>
+      </div>
+      <div class="card">
+        <i class="fas fa-lock"></i>
+        <h3>Tamper-Proof</h3>
+        <p>Once recorded, data cannot be altered, guaranteeing integrity of ownership records.</p>
+      </div>
+      <div class="card">
+        <i class="fas fa-globe"></i>
+        <h3>Accessibility</h3>
+        <p>Records are accessible securely from anywhere, empowering citizens and government alike.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 LandChain | Built with Blockchain Security</p>
+  </footer>
+
+</body>
+</html>

@@ -4,23 +4,29 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LandChain | About</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="about.css">
-  <script defer src="script.js"></script>
+
+  <!-- ✅ Corrected Flask static paths -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/about.css') }}">
+  <script defer src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+  <!-- Font Awesome -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 </head>
+
 <body>
   <!-- Navbar -->
   <header>
     <nav class="navbar">
       <div class="logo">LandChain</div>
       <ul class="nav-links">
-        <li><a href="home.html">Home</a></li>
-        <li><a href="about.html" class="active">About</a></li>
-        <li><a href="features.html">Features</a></li>
-        <li><a href="how.html">How It Works</a></li>
-        <li><a href="contact.html">Contact</a></li>
-        <li><a href="login.html" class="btn">Login</a></li>
+        <!-- ✅ Flask routes instead of .html -->
+        <li><a href="{{ url_for('home') }}">Home</a></li>
+        <li><a href="{{ url_for('about') }}" class="active">About</a></li>
+        <li><a href="{{ url_for('features') }}">Features</a></li>
+        <li><a href="{{ url_for('how') }}">How It Works</a></li>
+        <li><a href="{{ url_for('contact') }}">Contact</a></li>
+        <li><a href="{{ url_for('login') }}" class="btn">Login</a></li>
       </ul>
       <div class="menu-toggle"><i class="fas fa-bars"></i></div>
     </nav>
@@ -86,7 +92,7 @@
 
     <!-- Image Section -->
     <div class="about-image">
-      <img src="/assets/land05.png" alt="Blockchain Land Registry">
+      <img src="{{ url_for('static', filename='assets/land05.png') }}" alt="Blockchain Land Registry">
     </div>
 
     <!-- Key Features Section -->

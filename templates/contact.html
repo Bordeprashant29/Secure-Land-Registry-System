@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LandChain | About</title>
+
+  <!-- ✅ Corrected Flask static paths -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script defer src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+  <!-- Navbar -->
+  <header>
+    <nav class="navbar">
+      <div class="logo">LandChain</div>
+      <ul class="nav-links">
+        <li><a href="{{ url_for('home') }}">Home</a></li>
+        <li><a href="{{ url_for('about') }}">About</a></li>
+        <li><a href="{{ url_for('features') }}">Features</a></li>
+        <li><a href="{{ url_for('how') }}">How It Works</a></li>
+        <li><a href="{{ url_for('contact') }}" class="active">Contact</a></li>
+        <li><a href="#" class="btn">Login</a></li>
+      </ul>
+      <div class="menu-toggle"><i class="fas fa-bars"></i></div>
+    </nav>
+  </header>
+
+  <!-- Contact Section -->
+  <section class="contact page-section">
+    <h2>Contact Us</h2>
+    <form id="contactForm" method="POST" action="{{ url_for('contact') }}">
+      <input type="text" name="name" placeholder="Your Name" required>
+      <input type="email" name="email" placeholder="Your Email" required>
+      <textarea name="message" placeholder="Your Message" required></textarea>
+      <button type="submit" class="btn">Send Message</button>
+    </form>
+
+    {% if success %}
+      <p id="formMsg" style="color: green;">{{ success }}</p>
+    {% elif error %}
+      <p id="formMsg" style="color: red;">{{ error }}</p>
+    {% endif %}
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 LandChain | Built with Blockchain Security</p>
+  </footer>
+</body>
+</html>

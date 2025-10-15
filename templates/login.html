@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Login | IDS Portal</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+</head>
+<body>
+  <div class="login-container">
+    <h1>Welcome Back</h1>
+    <p>Log in using your <strong>Unique ID</strong> and password</p>
+
+    <form action="{{ url_for('login') }}" method="POST">
+      <div class="form-group">
+        <label for="unique_id">Unique ID</label>
+        <input type="text" id="unique_id" name="unique_id" placeholder="Enter your Unique ID" required>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Enter your Password" required>
+      </div>
+
+      <button type="submit">Login</button>
+
+      {% if error %}
+      <p class="error">{{ error }}</p>
+      {% endif %}
+    </form>
+
+    <p class="signup-link">
+      Don't have an account?
+      <a href="{{ url_for('register') }}">Register here</a>
+    </p>
+  </div>
+</body>
+</html>
