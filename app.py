@@ -1,14 +1,14 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
-import os
-import uuid
-import re  # For email validation
+from flask_mail import Mail, Message
+from werkzeug.security import generate_password_hash, check_password_hash
+import os, uuid, re
 
 # -------------------------
 # APP CONFIGURATION
 # -------------------------
 app = Flask(__name__)
-app.secret_key = "super_secret_key"  # Change later for better security
+app.secret_key = "super_secret_key"  # Change later
 
 # Ensure instance folder exists
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -20,8 +20,17 @@ if not os.path.exists(INSTANCE_DIR):
 db_path = os.path.join(INSTANCE_DIR, 'landchain.db')
 app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
 db = SQLAlchemy(app)
+
+# Email configuration (Optional, replace with your credentials)
+app.config.update(
+    MAIL_SERVER='smtp.gmail.com',
+    MAIL_PORT=587,
+    MAIL_USE_TLS=True,
+    MAIL_USERNAME='your_email@gmail.com',
+    MAIL_PASSWORD='your_app_password'
+)
+mail = Mail(app)
 
 # -------------------------
 # DATABASE MODEL
@@ -31,18 +40,20 @@ class User(db.Model):
     unique_id = db.Column(db.String(50), unique=True, nullable=False)
     username = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
-    password = db.Column(db.String(100), nullable=False)
+    password = db.Column(db.String(200), nullable=False)
     role = db.Column(db.String(50), nullable=False)  # admin / user / government
 
-
 # -------------------------
-# EMAIL VALIDATION FUNCTION
+# VALIDATION HELPERS
 # -------------------------
 def is_valid_email(email):
-    """Check if the provided email has a valid format."""
     pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
     return re.match(pattern, email)
 
+def is_strong_password(password):
+    """Password must have 8+ chars, uppercase, lowercase, number, special char"""
+    pattern = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$'
+    return re.match(pattern, password)
 
 # -------------------------
 # STATIC + LANDING ROUTES
@@ -71,9 +82,8 @@ def contact():
 def assets(filename):
     return send_from_directory('static/assets', filename)
 
-
 # -------------------------
-# AUTH ROUTES (REGISTER / LOGIN / LOGOUT)
+# AUTH ROUTES
 # -------------------------
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -89,38 +99,40 @@ def register():
             flash("⚠️ All fields are required!", "error")
             return redirect(url_for('register'))
 
-        # Email validation
         if not is_valid_email(email):
             flash("❌ Please enter a valid email address.", "error")
             return redirect(url_for('register'))
 
-        # Password confirmation
         if password != confirm_password:
             flash("❌ Passwords do not match!", "error")
             return redirect(url_for('register'))
 
-        # Check if email already exists
-        existing_user = User.query.filter_by(email=email).first()
-        if existing_user:
+        if not is_strong_password(password):
+            flash("⚠️ Password must be 8+ chars with uppercase, lowercase, number, special char.", "error")
+            return redirect(url_for('register'))
+
+        if User.query.filter_by(email=email).first():
             flash("⚠️ Email already registered! Try logging in.", "warning")
             return redirect(url_for('login'))
 
-        # Generate unique ID
+        # Generate unique ID and hash password
         unique_id = str(uuid.uuid4())[:8].upper()
+        hashed_password = generate_password_hash(password)
 
-        # Save new user
-        new_user = User(
-            username=username,
-            email=email,
-            password=password,
-            role=role,
-            unique_id=unique_id
-        )
-
+        # Save user
+        new_user = User(username=username, email=email, password=hashed_password, role=role, unique_id=unique_id)
         db.session.add(new_user)
         db.session.commit()
 
-        flash(f"✅ Registration successful! Your unique ID is: {unique_id}. Use this to log in.", "success")
+        # Send unique ID via email
+        try:
+            msg = Message("Welcome to LandChain 🌱", sender=app.config['MAIL_USERNAME'], recipients=[email])
+            msg.body = f"Hello {username},\n\nYour registration was successful!\nYour Unique ID: {unique_id}\nUse this ID to log in.\n\n- LandChain Team"
+            mail.send(msg)
+        except Exception as e:
+            print("⚠️ Email send failed:", e)
+
+        flash(f"✅ Registration successful! Your Unique ID: {unique_id}. It has been sent to your email.", "success")
         return redirect(url_for('login'))
 
     return render_template('register.html')
@@ -129,24 +141,26 @@ def register():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        unique_id = request.form['unique_id']
+        unique_id = request.form['unique_id'].strip()
         password = request.form['password']
         role = request.form['role']
 
-        # Validate user based on unique_id instead of email
-        user = User.query.filter_by(unique_id=unique_id, password=password, role=role).first()
-        if user:
+        user = User.query.filter_by(unique_id=unique_id, role=role).first()
+
+        if user and check_password_hash(user.password, password):
             session['user'] = user.username
             session['role'] = user.role
+            session['unique_id'] = user.unique_id
+            flash(f"✅ Welcome back, {user.username}!", "success")
 
             if role == 'admin':
                 return redirect(url_for('admin_dashboard'))
             elif role == 'user':
                 return redirect(url_for('user_dashboard'))
-            elif role == 'government':
+            else:
                 return redirect(url_for('gov_dashboard'))
         else:
-            flash("❌ Invalid ID, password, or role!", "error")
+            flash("❌ Invalid credentials! Check your ID, password, and role.", "error")
 
     return render_template('login.html')
 
@@ -157,7 +171,6 @@ def logout():
     flash("✅ You have been logged out successfully.", "info")
     return redirect(url_for('home'))
 
-
 # -------------------------
 # DASHBOARDS
 # -------------------------
@@ -165,20 +178,22 @@ def logout():
 def admin_dashboard():
     if session.get('role') == 'admin':
         return render_template('admin_dashboard.html', user=session['user'])
+    flash("⚠️ Unauthorized access.", "error")
     return redirect(url_for('login'))
 
 @app.route('/user/dashboard')
 def user_dashboard():
     if session.get('role') == 'user':
         return render_template('user_dashboard.html', user=session['user'])
+    flash("⚠️ Unauthorized access.", "error")
     return redirect(url_for('login'))
 
 @app.route('/government/dashboard')
 def gov_dashboard():
     if session.get('role') == 'government':
         return render_template('gov_dashboard.html', user=session['user'])
+    flash("⚠️ Unauthorized access.", "error")
     return redirect(url_for('login'))
-
 
 # -------------------------
 # INITIALIZE DB AND RUN

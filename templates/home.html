@@ -3,16 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LandChain | About</title>
+  <title>LandChain | Home</title>
 
-  <!-- ✅ Corrected Flask static paths -->
+  <!-- ✅ Correct Flask static paths -->
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
   <script defer src="{{ url_for('static', filename='js/script.js') }}"></script>
 
   <!-- Font Awesome -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 </head>
-
 
 <body>
   <!-- Navbar -->
@@ -25,7 +24,9 @@
         <li><a href="{{ url_for('features') }}">Features</a></li>
         <li><a href="{{ url_for('how') }}">How It Works</a></li>
         <li><a href="{{ url_for('contact') }}">Contact</a></li>
-        <li><a href="#" class="btn">Login</a></li>
+
+        <!-- ✅ Updated Login button -->
+        <li><a href="{{ url_for('login') }}" class="btn">Login</a></li>
       </ul>
       <div class="menu-toggle"><i class="fas fa-bars"></i></div>
     </nav>
@@ -38,7 +39,9 @@
       <p>Transparent, tamper-proof, and decentralized land record system.</p>
       <div class="hero-buttons">
         <a href="{{ url_for('about') }}" class="btn btn-primary">Learn More</a>
-        <a href="#" class="btn btn-secondary">Get Started</a>
+
+        <!-- ✅ Updated Get Started button -->
+        <a href="{{ url_for('login') }}" class="btn btn-secondary">Get Started</a>
       </div>
     </div>
   </section>
